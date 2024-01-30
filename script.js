@@ -1,9 +1,12 @@
 const columns = document.querySelectorAll(".col");
 const player1 = document.querySelector(".p1");
 const player2 = document.querySelector(".p2");
+const winnerMessage = document.querySelector(".winner-message");
+const button = document.querySelector(".refresh");
 let matrix = [[], [], []];
 let currentValue = true;
 let winner = "";
+let gameOn = true;
 player1.style.color = "black";
 
 const checkRow = () => {
@@ -100,31 +103,67 @@ const checkSecondDiagonal = () => {
 
 for (let i = 0; i < columns.length; i++) {
   columns[i].addEventListener("click", () => {
-    if (currentValue) {
-      if (columns[i].innerHTML === "") {
-        columns[i].innerHTML = "X";
-        matrix[columns[i].getAttribute("row")][columns[i].getAttribute("col")] =
-          "X";
-        player1.style.color = "gray";
-        player2.style.color = "black";
+    if (gameOn) {
+      if (currentValue) {
+        if (columns[i].innerHTML === "") {
+          columns[i].innerHTML = "X";
+          matrix[columns[i].getAttribute("row")][
+            columns[i].getAttribute("col")
+          ] = "X";
+          player1.style.color = "gray";
+          player2.style.color = "black";
+          player1.innerHTML = "Player 1 = X";
+          player2.innerHTML = ">Player 2 = O";
+          player1.style.marginLeft = "0px";
+          player2.style.marginLeft = "-18px";
+        }
+      } else {
+        if (columns[i].innerHTML === "") {
+          columns[i].innerHTML = "O";
+          matrix[columns[i].getAttribute("row")][
+            columns[i].getAttribute("col")
+          ] = "O";
+          player1.style.color = "black";
+          player2.style.color = "gray";
+          player1.innerHTML = ">Player 1 = X";
+          player2.innerHTML = "Player 2 = O";
+          player1.style.marginLeft = "-18px";
+          player2.style.marginLeft = "0px";
+        }
       }
-    } else {
-      if (columns[i].innerHTML === "") {
-        columns[i].innerHTML = "O";
-        matrix[columns[i].getAttribute("row")][columns[i].getAttribute("col")] =
-          "O";
-        player1.style.color = "black";
-        player2.style.color = "gray";
+      currentValue = !currentValue;
+      if (
+        checkRow() ||
+        checkColoumn() ||
+        checkFirstDiagonal() ||
+        checkSecondDiagonal()
+      ) {
+        winnerMessage.innerHTML = "The winner is " + winner;
+        player1.style.display = "none";
+        player2.style.display = "none";
+        button.style.display = "flex";
+        winnerMessage.style.display = "inherit";
+        gameOn = false;
       }
-    }
-    currentValue = !currentValue;
-    if (
-      checkRow() ||
-      checkColoumn() ||
-      checkFirstDiagonal() ||
-      checkSecondDiagonal()
-    ) {
-      console.log("The winner is ", winner);
     }
   });
 }
+
+button.addEventListener("click", () => {
+  for (let i = 0; i < columns.length; i++) {
+    columns[i].innerHTML = "";
+  }
+  gameOn = true;
+  winnerMessage.style.display = "none";
+  button.style.display = " none";
+  player1.style.display = "inherit";
+  player2.style.display = "inherit";
+  player1.style.color = "black";
+  player2.style.color = "gray";
+  player1.innerHTML = ">Player 1 = X";
+  player2.innerHTML = "Player 2 = O";
+  player1.style.marginLeft = "-18px";
+  player2.style.marginLeft = "0px";
+  currentValue = true;
+  matrix = [[], [], []];
+});

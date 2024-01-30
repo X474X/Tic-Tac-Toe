@@ -56,3 +56,24 @@ h1 {
   font-weight: 600;
   color: gray;
 }
+.p1 {
+  margin-left: -18px;
+}
+
+.winner-message {
+  color: black;
+  font-size: 50px;
+}
+
+.refresh {
+  border-radius: 30px;
+  padding: 20px 50px;
+  background-color: lightgreen;
+  color: white;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
